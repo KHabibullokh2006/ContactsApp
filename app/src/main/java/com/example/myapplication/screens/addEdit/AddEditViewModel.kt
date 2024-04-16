@@ -5,11 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.example.myapplication.database.ContactEntity
 
-class AddEditViewModel(
-    private val navController: NavController,
-    val id: Int,
-    private val model: AddEditModel
-) {
+class AddEditViewModel(private val navController: NavController, val id: Int, private val model: AddEditModel) {
     private val _name = MutableLiveData("")
     val name: LiveData<String> = _name
 
@@ -49,8 +45,8 @@ class AddEditViewModel(
     private fun updateContact() {
         val newName = name.value
         val newPhone = phone.value
-        val ex = ContactEntity(contact.id, newName, newPhone)
-        model.update(ex)
+        val contact = ContactEntity(contact.id, newName, newPhone)
+        model.update(contact)
     }
 
     fun updateName(name: String) {
@@ -62,7 +58,7 @@ class AddEditViewModel(
     }
 
     fun getTopBarText(): String {
-        return if (id == -1) "New" else "Edit"
+        return if (id == -1) "New Contact" else "Edit Contact"
     }
 
     fun getButtonText(): String {

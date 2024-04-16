@@ -19,4 +19,10 @@ class HomeModel(private val appDao: ContactDao){
     fun onDelete(contactEntity: ContactEntity){
         appDao.deleteContact(contactEntity)
     }
+    fun getAZContacts():List<ContactEntity>{
+        return appDao.getAscContacts()
+    }
+    fun getZAContacts():List<ContactEntity>{
+        return appDao.getDescContacts()
+    }
 }

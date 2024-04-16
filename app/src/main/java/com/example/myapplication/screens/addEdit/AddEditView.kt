@@ -66,7 +66,7 @@ fun AddEditView(vm: AddEditViewModel) {
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                placeholder = { Text(text = "Nom kiriting", color = Gray) },
+                placeholder = { Text(text = "Name", color = Gray) },
 
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -82,16 +82,16 @@ fun AddEditView(vm: AddEditViewModel) {
                 ),
                 onValueChange = { vm.updatePhone(it) },
                 modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                 singleLine = true,
-                placeholder = { Text(text = "Summa kiriting", color = Gray) },
+                placeholder = { Text(text = "Phone", color = Gray) },
 
             )
         }
         TextButton(
             enabled =
             if (vm.id == -1){
-                phone == "" && name.isNotBlank()
+                phone.isNotBlank() && name.isNotBlank()
             }else {
                 vm.contact.phone != phone || vm.contact.name != name },
             onClick = { vm.onAddUpdate(ContactEntity(name = name, phone = phone)) },

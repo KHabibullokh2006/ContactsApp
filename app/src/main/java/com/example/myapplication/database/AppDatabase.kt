@@ -23,20 +23,26 @@ data class ContactEntity(
 
 @Dao
 interface ContactDao{
-    @Query("select * from ContactEntity where id = :expenseId")
-    fun getContact(expenseId:Int):ContactEntity
+    @Query("select * from ContactEntity where id = :contactId")
+    fun getContact(contactId:Int):ContactEntity
 
     @Insert
-    fun addContact(expense: ContactEntity)
+    fun addContact(contact: ContactEntity)
 
     @Update
-    fun updateContact(expense: ContactEntity)
+    fun updateContact(contact: ContactEntity)
 
     @Delete
-    fun deleteContact(expense: ContactEntity)
+    fun deleteContact(contact: ContactEntity)
 
     @Query("select * from ContactEntity")
     fun getAllContacts(): List<ContactEntity>
+
+    @Query("select * from ContactEntity order by name asc")
+    fun getAscContacts():List<ContactEntity>
+
+    @Query("select * from ContactEntity order by name desc")
+    fun getDescContacts():List<ContactEntity>
 }
 
 @Database(entities = [ContactEntity::class], version = 1)
