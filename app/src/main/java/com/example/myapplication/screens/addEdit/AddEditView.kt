@@ -18,6 +18,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextFieldDefaults
@@ -29,7 +30,6 @@ import androidx.compose.ui.graphics.Color.Companion.Gray
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.Text
 import com.example.myapplication.database.ContactEntity
 import com.example.myapplication.ui.theme.Primary
 import com.example.myapplication.ui.theme.Primary2

@@ -13,7 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DismissDirection
 import androidx.compose.material3.DismissValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -22,6 +22,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
@@ -30,23 +31,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.wear.compose.material.Text
-import com.example.myapplication.ui.theme.Primary
-import com.example.myapplication.ui.theme.Primary2
 import kotlinx.coroutines.delay
+
+var check = false
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeView(vm : HomeViewModel) {
-    vm.loadList()
+fun HomeView(vm: HomeViewModel) {
+    if (!check) {
+        vm.loadList()
+    }
+
     val list = vm.list.observeAsState().value
     var displayMenu by remember { mutableStateOf(false) }
 
@@ -60,13 +61,17 @@ fun HomeView(vm : HomeViewModel) {
                     Icon(imageVector = Icons.Default.MoreVert, contentDescription = "menu")
                 }
                 DropdownMenu(expanded = displayMenu, onDismissRequest = { displayMenu = false }) {
-                    DropdownMenuItem(text = { Text(text = "A-Z") }, onClick = { vm.sortAZ() })
-                    DropdownMenuItem(text = { Text(text = "Z-A") }, onClick = { vm.sortZA() })
+                    DropdownMenuItem(
+                        text = { Text(text = "A-Z") },
+                        onClick = { vm.sortAZ(); check = true })
+                    DropdownMenuItem(
+                        text = { Text(text = "Z-A") },
+                        onClick = { vm.sortZA(); check = true })
                 }
             })
 
-        LazyColumn (Modifier.padding(horizontal = 6.dp)){
-            items(list!!.size) {index->
+        LazyColumn(Modifier.padding(horizontal = 6.dp)) {
+            items(list!!.size) { index ->
                 val context = LocalContext.current
                 var show by remember { mutableStateOf(true) }
                 val dismissState = rememberDismissState(
@@ -78,7 +83,7 @@ fun HomeView(vm : HomeViewModel) {
                     }, positionalThreshold = { 150.dp.toPx() }
                 )
                 AnimatedVisibility(
-                    show,exit = fadeOut(spring())
+                    show, exit = fadeOut(spring())
                 ) {
                     SwipeToDismiss(
                         state = dismissState,
@@ -89,9 +94,10 @@ fun HomeView(vm : HomeViewModel) {
                         dismissContent = {
                             ContactItem(
                                 contact = list[index],
-                                onUpdate = {vm.onUpdate(list[index])}
+                                onUpdate = { vm.onUpdate(list[index]) }
                             )
-                        }
+                        },
+                        directions = setOf(DismissDirection.EndToStart, DismissDirection.StartToEnd)
                     )
                 }
 
@@ -99,7 +105,8 @@ fun HomeView(vm : HomeViewModel) {
                     if (!show) {
                         delay(800)
                         vm.onRemove(list[index])
-                        show=true
+                        show = true
+                        check = true
                         Toast.makeText(context, "Item removed", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -108,12 +115,13 @@ fun HomeView(vm : HomeViewModel) {
             }
         }
     }
-    Box(modifier = Modifier.fillMaxSize()){
-        Box (
+    Box(modifier = Modifier.fillMaxSize()) {
+        Box(
             Modifier
                 .padding(6.dp)
-                .align(Alignment.BottomEnd)){
-            FloatingActionButton(onClick = {vm.onAdd() }, containerColor = Color(0xFF1a73e8)) {
+                .align(Alignment.BottomEnd)
+        ) {
+            FloatingActionButton(onClick = { vm.onAdd() }, containerColor = Color(0xFF1a73e8)) {
                 Icon(Icons.Rounded.Add, contentDescription = "", tint = Color.White)
             }
         }

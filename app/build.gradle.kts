@@ -64,8 +64,8 @@ dependencies {
     //room
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
-    implementation("androidx.compose.material3:material3-android:1.2.1")
-    implementation("androidx.wear.compose:compose-material:1.3.1")
+//    implementation("androidx.compose.material3:material3-android:1.2.1")
+//    implementation("androidx.wear.compose:compose-material:1.3.1")
     kapt("androidx.room:room-compiler:2.6.1")
     implementation ("androidx.compose.runtime:runtime-livedata:1.6.4")
 

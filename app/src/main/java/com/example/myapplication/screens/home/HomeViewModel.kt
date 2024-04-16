@@ -39,7 +39,6 @@ class HomeViewModel(private val navController: NavController, private val homeMo
     fun onRemove(contactEntity: ContactEntity) {
         homeModel.onDelete(contactEntity)
         Log.i(TAG, "onRemove")
-        loadList()
     }
 
     fun onUpdate(contactEntity: ContactEntity) {
@@ -48,12 +47,10 @@ class HomeViewModel(private val navController: NavController, private val homeMo
 
     fun sortAZ() {
         _list.value = homeModel.getAZContacts()
-        loadList()
     }
 
     fun sortZA() {
         _list.value = homeModel.getZAContacts()
-        loadList()
     }
 
     fun search() {
